@@ -1,0 +1,43 @@
+{
+    "extends": "eslint-config-standard-with-typescript",
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
+    "rules": {
+        "import/extensions": [
+            1,
+            "never"
+        ],
+        "no-restricted-syntax": [
+            1,
+            "ForInStatement",
+            "LabeledStatement",
+            "WithStatement"
+        ],
+        "comma-dangle": [
+            1,
+            "never"
+        ],
+        "linebreak-style": "off",
+        "object-curly-newline": [
+            "error",
+            {
+                "consistent": true
+            }
+        ],
+        "no-underscore-dangle": "off",
+        "no-param-reassign": 0,
+        "@typescript-eslint/no-misused-promises": [
+            "error",
+            {
+                "checksVoidReturn": false
+            }
+        ],
+        "@typescript-eslint/adjacent-overload-signatures": "error",
+        "@typescript-eslint/naming-convention": "warn"
+    },
+    "ignorePatterns": [
+        "dist",
+        "src/**/*.js"
+    ]
+}

@@ -1,0 +1,26 @@
+0. server
+	servidor levantado(Servidor de NODE)
+	
+1. base de datos
+	- conexion (xampp ==> se necesita un servidor para crear DB)
+	- modelos
+	- repositorio(CRUD) "ir a la DB"
+	- index 
+	
+2. Acciones: 
+	- clases de acciones, 
+	- index
+	
+3. Controladores
+	- clases de acciones, 
+	- index
+	
+4. Rutas - middleware
+	- crear script de rutas, endpoint
+	- index de rutas(router.use) importa las otras rutas. 
+	
+5. utils: 
+	* logguer [para create por ejemplo], uuid, carpeta utils
+
+// note to self:
+- carAction create car es tipo any porque en vez de any puede ir una interfaz con los datos del carro: name, uuid...
