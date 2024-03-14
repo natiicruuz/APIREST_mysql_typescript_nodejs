@@ -1,19 +1,18 @@
 import { type CarActions } from 'actions/indexActions'
 import { type Request, type Response } from 'express'
-import { type Logger, type Exception, type Uuid } from '../utils/indexUtils'
+import { type Logger, type Exception, type ResponseFormat } from '../utils/indexUtils'
 
 export class CarController {
   private readonly carAction: CarActions
   private readonly logger: Logger
   private readonly exception: Exception
-  private readonly uuidGenerator!: Uuid
+  private readonly responseFormat: ResponseFormat
 
-  constructor (carAction: CarActions, logger: Logger, exception: Exception, uuidGenerator: Uuid) {
+  constructor (carAction: CarActions, logger: Logger, exception: Exception, responseFormat: ResponseFormat) {
     this.carAction = carAction
     this.logger = logger
     this.exception = exception
-    this.uuidGenerator = uuidGenerator
-
+    this.responseFormat = responseFormat
 
     this.getCar = this.getCar.bind(this)
     this.createCar = this.createCar.bind(this)
@@ -21,26 +20,42 @@ export class CarController {
   }
 
   async getCar (req: Request, res: Response): Promise<void> {
-    const result = await this.carAction.getCar()
-    res.send(200).json(result)
+    try {
+      const result = await this.carAction.getCar()
+      const protocol = req.protocol
+      const host = req.get('host') ?? '/'
+      const path = req.path
+
+      const response = await this.responseFormat.run(result, protocol, host, path, 200)
+
+      res.json(response)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async createCar (req: Request, res: Response): Promise<void> {
     try {
       this.logger.info('[CategoryController][createCar] -> starting...')
-      const car = {
-        uuid: req.body.uuid,
-        name: req.body.name,
-        model: req.body.model
-      }
+
+      const protocol = req.protocol
+      const host = req.get('host') ?? '/'
+      const path = req.path
+
+      const { name, model, year } = req.body
+
+      const car = { name, model, year }
       const newCar = await this.carAction.createCar(car)
+
       let result
 
       if (newCar === null) {
-        result = res.status(404).send('Error: car was not created, please insert valid inputs.')
-      } else {
-        result = res.status(200)
+        result = null
+        res.status(404).send('Error: car was not created, please insert valid inputs.')
       }
+
+      result = await this.responseFormat.run(newCar, protocol, host, path, 200)
+
       res.json(result)
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))
@@ -50,8 +65,26 @@ export class CarController {
   async updateCar (req: Request, res: Response): Promise<void> {
     try {
       this.logger.info('[CategoryController][updateCar] -> starting...')
+      const protocol = req.protocol
+      const host = req.get('host') ?? '/'
+      const path = req.path
+      const uuid = req.params.uuid
 
-    // const carUpdated = await this.carAction.updateCar(uuidGenerator, car)
+      const car = { ...req.body }
+
+      const carUpdated = await this.carAction.updateCar(uuid, car)
+
+      let result
+      if (carUpdated === null) {
+        result = await this.responseFormat.run(['Car has not been updated.'], protocol, host, path, 404)
+        res.status(404)
+      } else {
+        result = await this.responseFormat.run(['Car has been updated successfully.'], protocol, host, path, 200)
+        res.status(200)
+      }
+
+      this.logger.info('[CategoryController][update] -> end.')
+      res.json(result)
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))
     }

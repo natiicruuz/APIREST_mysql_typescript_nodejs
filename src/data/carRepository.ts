@@ -24,12 +24,13 @@ export default class CarRepository {
   public async createCar (carCreation: any): Promise<Nullable<CarModel>> {
     try {
       this.logger.info('[CategoryRepository][create] -> starting...')
-      const { uuid, name, model } = carCreation
+      const { uuid, name, model, year } = carCreation
 
       const result = await this.carModel.create({
         uuid,
         name,
-        model
+        model,
+        year
       })
 
       this.logger.info('[CategoryRepository][create] -> end.')
@@ -43,21 +44,52 @@ export default class CarRepository {
     try {
       this.logger.info('[CategoryRepository][update] -> starting...')
 
-      let response = null
+      let response
 
-      if (carUuid !== null) {
-        response = await this.carModel.updateCar(carUpdate, {
+      if (carUuid === null || carUuid === undefined) {
+        response = null
+      } else {
+        const carUpdated = await this.carModel.update(carUpdate, {
           where: {
             uuid: carUuid
           }
         })
           .then(() => {
             return this.carModel.findAll({
-              attributes: ['uuid', 'name', 'model'],
+              attributes: ['uuid', 'name', 'model', 'year', ['created_at', 'createdAt'], ['updated_at', 'updatedAt']],
               where: {
                 uuid: carUuid
               }
             })
+          })
+
+        const {
+          id,
+          createdAt,
+          deletedAt,
+          ...rest
+        } = carUpdated[0]?.dataValues
+        response = rest
+      }
+
+      this.logger.info('[CategoryRepository][update] -> end.')
+      return response
+    } catch (error) {
+      this.logger.error(`[CategoryRepository][update] -> ${error as string}`)
+      throw new Error(await this.exception.getErrorMessage(error))
+    }
+  }
+
+  public async deleteCar (carUuid: string): Promise<Nullable<CarModel>> {
+    try {
+      this.logger.info('[CategoryRepository][delete] -> starting...')
+
+      let response = null
+
+      if (carUuid !== null) {
+        response = await this.carModel.delete()
+          .then(() => {
+            return this.carModel.findAll({ where: { uuid: carUuid } })
           })
       }
 

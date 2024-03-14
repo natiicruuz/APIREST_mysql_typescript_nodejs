@@ -1,4 +1,4 @@
-import { sequelizeConnection } from '../data/connection'
+import { sequelizeConnection } from '../data/connectionSequelize'
 import { DataTypes, Model, type Optional } from 'sequelize'
 
 interface ICarAttributes {
@@ -6,6 +6,7 @@ interface ICarAttributes {
   uuid: string
   name: string
   model: string
+  year: string
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date
@@ -18,10 +19,7 @@ class CarModel extends Model<ICarAttributes, ICarInput> implements ICarAttribute
   public uuid!: string
   public name!: string
   public model!: string
-  public ownerUuid!: string
-  public personAssignedUuid!: string
-  public subject!: string
-  public description!: string
+  public year!: string
 
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
@@ -43,11 +41,14 @@ CarModel.init({
   },
   model: {
     type: DataTypes.STRING
+  },
+  year: {
+    type: DataTypes.STRING
   }
 }, {
   timestamps: true,
   sequelize: sequelizeConnection,
-  tableName: 'cars',
+  tableName: 'car',
   paranoid: true,
   deletedAt: 'deleted_at',
   updatedAt: 'updated_at',

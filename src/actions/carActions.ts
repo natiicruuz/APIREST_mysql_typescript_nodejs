@@ -38,16 +38,16 @@ export class CarActions {
     }
   }
 
-  async updateCar (uuidGenerator: string, car: any): Promise<Nullable<any>> {
+  async updateCar (uuid: string, car: any): Promise<Nullable<any>> {
     try {
       this.logger.info('[CategoryAction][update] -> starting...')
       let carUpdated
-      if ((uuidGenerator !== null || uuidGenerator !== undefined) && (car !== null || car !== undefined)) {
-        carUpdated = await this.carRepository.updateCar(uuidGenerator, car)
+      if ((uuid !== null || uuid !== undefined) && (car !== null || car !== undefined)) {
+        carUpdated = await this.carRepository.updateCar(uuid, car)
       } else {
         carUpdated = null
       }
-      this.logger.info('[CarAction][create] -> end.')
+      this.logger.info('[CarAction][update] -> end.')
       return carUpdated
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))
