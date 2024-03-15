@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type CarActions } from 'actions/indexActions'
 import { type Request, type Response } from 'express'
 import { type Logger, type Exception, type ResponseFormat } from '../utils/indexUtils'
@@ -19,7 +20,7 @@ export class CarController {
     this.updateCar = this.updateCar.bind(this)
   }
 
-  async getCar (req: Request, res: Response): Promise<void> {
+  public async getCar (req: Request, res: Response): Promise<void> {
     try {
       const result = await this.carAction.getCar()
       const protocol = req.protocol
@@ -34,9 +35,9 @@ export class CarController {
     }
   }
 
-  async createCar (req: Request, res: Response): Promise<void> {
+  public async createCar (req: Request, res: Response): Promise<void> {
     try {
-      this.logger.info('[CategoryController][createCar] -> starting...')
+      this.logger.info('[CarController][createCar] -> starting...')
 
       const protocol = req.protocol
       const host = req.get('host') ?? '/'
@@ -62,9 +63,9 @@ export class CarController {
     }
   }
 
-  async updateCar (req: Request, res: Response): Promise<void> {
+  public async updateCar (req: Request, res: Response): Promise<void> {
     try {
-      this.logger.info('[CategoryController][updateCar] -> starting...')
+      this.logger.info('[CarController][updateCar] -> starting...')
       const protocol = req.protocol
       const host = req.get('host') ?? '/'
       const path = req.path
@@ -73,7 +74,6 @@ export class CarController {
       const car = { ...req.body }
 
       const carUpdated = await this.carAction.updateCar(uuid, car)
-
       let result
       if (carUpdated === null) {
         result = await this.responseFormat.run(['Car has not been updated.'], protocol, host, path, 404)
@@ -83,7 +83,33 @@ export class CarController {
         res.status(200)
       }
 
-      this.logger.info('[CategoryController][update] -> end.')
+      this.logger.info('[CarController][update] -> end.')
+      res.json(result)
+    } catch (error) {
+      throw new Error(await this.exception.getErrorMessage(error))
+    }
+  }
+
+  public async deleteCar (req: Request, res: Response): Promise<void> {
+    try {
+      const protocol = req.protocol
+      const host = req.get('host') ?? '/'
+      const path = req.path
+      const uuid = req.params.uuid
+      this.logger.info(`[CarController][deleteCar] [${uuid}] -> starting...`)
+      const carDeleted = await this.carAction.deleteCar(uuid)
+
+      console.log(carDeleted)
+
+      let result
+      if (carDeleted === null) {
+        result = await this.responseFormat.run(['Car has not been deleted.'], protocol, host, path, 404)
+        res.status(404)
+      } else {
+        result = await this.responseFormat.run(['Car has been deleted successfully.'], protocol, host, path, 200)
+        res.status(200)
+      }
+      this.logger.info(`[CarController][delete] [${uuid}] -> end.`)
       res.json(result)
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))

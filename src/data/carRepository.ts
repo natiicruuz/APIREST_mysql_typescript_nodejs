@@ -1,9 +1,5 @@
 import type CarModel from '../models/carModel'
-import {
-  type Logger,
-  type Exception,
-  type Nullable
-} from '../utils/indexUtils'
+import { type Logger, type Exception, type Nullable, Date } from '../utils/indexUtils'
 
 export default class CarRepository {
   private readonly carModel: any
@@ -23,7 +19,7 @@ export default class CarRepository {
 
   public async createCar (carCreation: any): Promise<Nullable<CarModel>> {
     try {
-      this.logger.info('[CategoryRepository][create] -> starting...')
+      this.logger.info('[CarRepository][create] -> starting...')
       const { uuid, name, model, year } = carCreation
 
       const result = await this.carModel.create({
@@ -33,7 +29,7 @@ export default class CarRepository {
         year
       })
 
-      this.logger.info('[CategoryRepository][create] -> end.')
+      this.logger.info('[CarRepository][create] -> end.')
       return result
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))
@@ -42,7 +38,7 @@ export default class CarRepository {
 
   public async updateCar (carUuid: string, carUpdate: any): Promise<Nullable<CarModel>> {
     try {
-      this.logger.info('[CategoryRepository][update] -> starting...')
+      this.logger.info('[CarRepository][update] -> starting...')
 
       let response
 
@@ -62,38 +58,40 @@ export default class CarRepository {
               }
             })
           })
-
-        const {
-          id,
-          createdAt,
-          deletedAt,
-          ...rest
-        } = carUpdated[0]?.dataValues
-        response = rest
+        response = carUpdated
       }
 
-      this.logger.info('[CategoryRepository][update] -> end.')
+      this.logger.info('[CarRepository][update] -> end.')
       return response
     } catch (error) {
-      this.logger.error(`[CategoryRepository][update] -> ${error as string}`)
+      this.logger.error(`[CarRepository][update] -> ${error as string}`)
       throw new Error(await this.exception.getErrorMessage(error))
     }
   }
 
-  public async deleteCar (carUuid: string): Promise<Nullable<CarModel>> {
+  public async deleteCar (carUuid: string): Promise<Nullable<boolean>> {
     try {
-      this.logger.info('[CategoryRepository][delete] -> starting...')
+      this.logger.info(`[CarRepository][delete][${carUuid}] -> starting...`)
+      let result
 
-      let response = null
-
-      if (carUuid !== null) {
-        response = await this.carModel.delete()
+      if (carUuid !== null || carUuid !== undefined) {
+        const carDeleted = await this.carModel
+          .update({ deleted_at: new Date() }, { where: { uuid: carUuid } })
           .then(() => {
             return this.carModel.findAll({ where: { uuid: carUuid } })
           })
+          // .delete()
+        if (carDeleted.length === 0) {
+          result = true
+          this.logger.info(`[CarRepository][delete] [${carUuid}] -> end.`)
+        } else {
+          result = false
+          this.logger.info('[CarRepository][delete] Category dosnt exist -> end.')
+        }
+      } else {
+        result = null
       }
-
-      return response
+      return result
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))
     }

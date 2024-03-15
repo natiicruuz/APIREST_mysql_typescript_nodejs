@@ -8,6 +8,7 @@ const router = Router()
 
 router.get('/api/v1/car', carController.getCar)
 router.post('/api/v1/car', carController.createCar)
-router.put('/api/v1/:id/car', carController.updateCar)
+router.put('/api/v1/:uuid/car', carController.updateCar)
+router.delete('/api/v1/:uuid/car', carController.deleteCar)
 
 export default router

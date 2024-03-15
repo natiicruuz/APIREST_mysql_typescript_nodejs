@@ -22,7 +22,7 @@ export class CarActions {
 
   async createCar (car: any): Promise<Nullable<any>> {
     try {
-      this.logger.info('[CategoryAction][create] -> starting...')
+      this.logger.info('[CarAction][create] -> starting...')
       let newCar
       if (car === null || car === undefined || Object.keys(car).length === 0) {
         newCar = null
@@ -40,8 +40,9 @@ export class CarActions {
 
   async updateCar (uuid: string, car: any): Promise<Nullable<any>> {
     try {
-      this.logger.info('[CategoryAction][update] -> starting...')
+      this.logger.info('[CarAction][update] -> starting...')
       let carUpdated
+      console.log(uuid)
       if ((uuid !== null || uuid !== undefined) && (car !== null || car !== undefined)) {
         carUpdated = await this.carRepository.updateCar(uuid, car)
       } else {
@@ -49,6 +50,25 @@ export class CarActions {
       }
       this.logger.info('[CarAction][update] -> end.')
       return carUpdated
+    } catch (error) {
+      throw new Error(await this.exception.getErrorMessage(error))
+    }
+  }
+
+  public async deleteCar (uuid: string): Promise<Nullable<boolean>> {
+    try {
+      this.logger.info('[CarAction][delete] -> starting...')
+      let carDeleted
+      console.log(uuid)
+      if (uuid === null || uuid === undefined) {
+        carDeleted = null
+      } else {
+        carDeleted = await this.carRepository.deleteCar(uuid)
+      }
+
+      this.logger.info('[CarAction][delete] -> end.')
+      console.log(carDeleted)
+      return carDeleted
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))
     }
