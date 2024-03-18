@@ -59,7 +59,7 @@ export class CarActions {
     try {
       this.logger.info('[CarAction][delete] -> starting...')
       let carDeleted
-      console.log(uuid)
+
       if (uuid === null || uuid === undefined) {
         carDeleted = null
       } else {
@@ -67,7 +67,7 @@ export class CarActions {
       }
 
       this.logger.info('[CarAction][delete] -> end.')
-      console.log(carDeleted)
+      console.log('car deleted: ', carDeleted)
       return carDeleted
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))

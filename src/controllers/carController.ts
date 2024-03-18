@@ -18,6 +18,7 @@ export class CarController {
     this.getCar = this.getCar.bind(this)
     this.createCar = this.createCar.bind(this)
     this.updateCar = this.updateCar.bind(this)
+    this.deleteCar = this.deleteCar.bind(this)
   }
 
   public async getCar (req: Request, res: Response): Promise<void> {
@@ -92,14 +93,14 @@ export class CarController {
 
   public async deleteCar (req: Request, res: Response): Promise<void> {
     try {
+      this.logger.info('[CarController][deleteCar] -> starting...')
+
       const protocol = req.protocol
       const host = req.get('host') ?? '/'
       const path = req.path
       const uuid = req.params.uuid
-      this.logger.info(`[CarController][deleteCar] [${uuid}] -> starting...`)
-      const carDeleted = await this.carAction.deleteCar(uuid)
 
-      console.log(carDeleted)
+      const carDeleted = await this.carAction.deleteCar(uuid)
 
       let result
       if (carDeleted === null) {
@@ -109,7 +110,7 @@ export class CarController {
         result = await this.responseFormat.run(['Car has been deleted successfully.'], protocol, host, path, 200)
         res.status(200)
       }
-      this.logger.info(`[CarController][delete] [${uuid}] -> end.`)
+      this.logger.info('[CarController][delete] -> end.')
       res.json(result)
     } catch (error) {
       throw new Error(await this.exception.getErrorMessage(error))

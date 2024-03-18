@@ -48,7 +48,8 @@ export default class CarRepository {
         const carUpdated = await this.carModel.update(carUpdate, {
           where: {
             uuid: carUuid
-          }
+          },
+          updated_at: new Date()
         })
           .then(() => {
             return this.carModel.findAll({
@@ -73,20 +74,24 @@ export default class CarRepository {
     try {
       this.logger.info(`[CarRepository][delete][${carUuid}] -> starting...`)
       let result
+      console.log('car uuid; ', carUuid)
 
       if (carUuid !== null || carUuid !== undefined) {
-        const carDeleted = await this.carModel
-          .update({ deleted_at: new Date() }, { where: { uuid: carUuid } })
+        const carDeleted = await this.carModel.destroy({
+          where: {
+            uuid: carUuid
+          }
+        })
           .then(() => {
             return this.carModel.findAll({ where: { uuid: carUuid } })
           })
-          // .delete()
+
         if (carDeleted.length === 0) {
           result = true
           this.logger.info(`[CarRepository][delete] [${carUuid}] -> end.`)
         } else {
           result = false
-          this.logger.info('[CarRepository][delete] Category dosnt exist -> end.')
+          this.logger.info('[CarRepository][delete] car doesnt exist -> end.')
         }
       } else {
         result = null

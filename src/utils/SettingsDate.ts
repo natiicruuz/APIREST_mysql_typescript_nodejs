@@ -5,7 +5,7 @@ const { combine, timestamp, printf, colorize } = winston.format
 
 export class SettingsDate {
   config: object
-  readonly dateManaguer = new Date()
+  readonly dateManager = new Date()
 
   constructor () {
     this.config = {
@@ -16,7 +16,7 @@ export class SettingsDate {
       format: combine(
         colorize(),
         timestamp({
-          format: () => this.dateManaguer.getSysDateString().toString()
+          format: () => this.dateManager.getSysDateString().toString()
         }),
         printf((info) => {
           const { level, message, ...extra } = info

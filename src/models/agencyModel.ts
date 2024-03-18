@@ -7,6 +7,7 @@ interface IAgencyAttributes {
   name: string
   createdAt?: Date
   updatedAt?: Date
+  deletedAt?: Date
 }
 
 export interface IAgencyInput extends Optional<IAgencyAttributes, 'id'> {}
@@ -18,6 +19,7 @@ class AgencyModel extends Model<IAgencyAttributes, IAgencyInput> implements IAge
 
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
+  public readonly deletedAt!: Date
 }
 
 AgencyModel.init({
@@ -36,8 +38,9 @@ AgencyModel.init({
 }, {
   timestamps: true,
   sequelize: sequelizeConnection,
-  tableName: 'car',
+  tableName: 'agency',
   paranoid: true,
+  deletedAt: 'deleted_at',
   updatedAt: 'updated_at',
   createdAt: 'created_at'
 })

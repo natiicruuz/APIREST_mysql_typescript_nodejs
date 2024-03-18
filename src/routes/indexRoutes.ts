@@ -2,13 +2,17 @@ import { type Request, type Response, Router, type NextFunction } from 'express'
 
 import { logger, Exception } from '../utils/indexUtils'
 import carRoutes from './carRoutes'
+import agencyRoutes from './agencyRoutes'
+import userRoutes from './userRoutes'
 
 const router = Router()
 
 router.use('', carRoutes)
-/* router.use('' /* ruta agencia )
-router.use('' /* ruta venta )
-router.use('' /* ruta user ) */
+router.use('', agencyRoutes)
+router.use('', userRoutes)
+
+/*
+router.use('' /* ruta sale ) */
 
 router.use('/', (req: Request, res: Response) => {
   res.json({
