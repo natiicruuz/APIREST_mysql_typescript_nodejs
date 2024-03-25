@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRepository = exports.userRepository = exports.AgencyRepository = exports.agencyRepository = exports.CarRepository = exports.carRepository = void 0;
+const indexUtils_1 = require("../utils/indexUtils");
+const carModel_1 = __importDefault(require("../models/carModel"));
+const agencyModel_1 = __importDefault(require("../models/agencyModel"));
+const userModel_1 = __importDefault(require("../models/userModel"));
+const carRepository_1 = __importDefault(require("./carRepository"));
+exports.CarRepository = carRepository_1.default;
+const agencyRepository_1 = __importDefault(require("./agencyRepository"));
+exports.AgencyRepository = agencyRepository_1.default;
+const userRepository_1 = __importDefault(require("./userRepository"));
+exports.UserRepository = userRepository_1.default;
+const carRepository = new carRepository_1.default(carModel_1.default, indexUtils_1.logger, indexUtils_1.exception);
+exports.carRepository = carRepository;
+const agencyRepository = new agencyRepository_1.default(agencyModel_1.default, indexUtils_1.logger, indexUtils_1.exception);
+exports.agencyRepository = agencyRepository;
+const userRepository = new userRepository_1.default(userModel_1.default, indexUtils_1.logger, indexUtils_1.exception);
+exports.userRepository = userRepository;

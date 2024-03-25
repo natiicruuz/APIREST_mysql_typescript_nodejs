@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { type IUuid } from '../interfaces/indexInterfaces'
+import { type IUuid } from '../interfaces/IndexInterfaces'
 
 export class Uuid implements IUuid {
   constructor (value?: string) {

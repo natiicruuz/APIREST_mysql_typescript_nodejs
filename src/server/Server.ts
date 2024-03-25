@@ -1,7 +1,7 @@
 import express from 'express'
 import type * as http from 'http'
 import { type Logger, logger } from '../utils/indexUtils'
-import routes from '../routes/indexRoutes'
+import routes from '../routes/IndexRoutes'
 import cors from 'cors'
 
 export class Server {

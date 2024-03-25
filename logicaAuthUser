@@ -1,5 +1,5 @@
 MODELO ------------ REPOSITORIO ---------------- ACTIONS ----------------------- CONTROLLER
-id,           |      busca si el email esta    |  logica: 			|le envia el 
+id,           |      busca si el email esta    |  logica: 			           |le envia el 
 nombre,	      |	en la DB y lo manda si si.     |verificacion del email en DB,	|correo al 							
 email,        |                                | si si esta, retorna token       |actions
 passwd        |
