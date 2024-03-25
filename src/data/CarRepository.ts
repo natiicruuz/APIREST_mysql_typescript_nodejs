@@ -98,7 +98,7 @@ export default class CarRepository {
         model,
         year,
         price,
-        agency_id: agencyId
+        agencyId
       })
 
       this.logger.info('[CarRepository][create] -> end.')
@@ -158,7 +158,6 @@ export default class CarRepository {
     try {
       this.logger.info(`[CarRepository][delete][${carUuid}] -> starting...`)
       let result
-      console.log('car uuid; ', carUuid)
 
       if (carUuid !== null || carUuid !== undefined) {
         const carDeleted = await this.carModel

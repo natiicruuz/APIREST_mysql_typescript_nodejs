@@ -45,7 +45,6 @@ export class UserActions {
 
   async createUser (user: any): Promise<Nullable<any>> {
     this.logger.info('[UserAction][create] -> starting...')
-    console.log('user', user)
     let newUser: any
     if (
       user === null ||
@@ -69,7 +68,6 @@ export class UserActions {
   async updateUser (uuid: string, user: any): Promise<Nullable<any>> {
     this.logger.info('[UserAction][update] -> starting...')
     let userUpdated
-    console.log(uuid)
     if (
       (uuid !== null || uuid !== undefined) &&
         (user !== null || user !== undefined)
@@ -93,7 +91,6 @@ export class UserActions {
     }
 
     this.logger.info('[UserAction][delete] -> end.')
-    console.log('user deleted: ', userDeleted)
     return userDeleted
   }
 
@@ -102,7 +99,6 @@ export class UserActions {
 
     const result = await this.userRepository.getUserByEmail(email)
     this.logger.info('[UserAction][getUserByEmail] -> end.')
-    console.log('result: ', result)
     return result
   }
 }

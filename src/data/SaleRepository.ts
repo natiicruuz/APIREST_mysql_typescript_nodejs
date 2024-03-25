@@ -39,7 +39,6 @@ export default class SaleRepository {
         totalPages
       }
       this.logger.info('[SaleRepository][getSale] -> end.')
-
       return {
         result,
         pagination
@@ -93,10 +92,7 @@ export default class SaleRepository {
     }
   }
 
-  public async updateSale (
-    saleUuid: string,
-    saleUpdate: any
-  ): Promise<Nullable<SaleModel>> {
+  public async updateSale (saleUuid: string, saleUpdate: any): Promise<Nullable<SaleModel>> {
     try {
       this.logger.info('[SaleRepository][update] -> starting...')
 

@@ -136,7 +136,7 @@ export class SaleController {
     const host = req.get('host') ?? '/'
     const path = req.path
     const uuid = req.params.uuid
-
+    console.log('uuid', uuid)
     const saleDeleted = await this.saleAction.deleteSale(uuid)
 
     let result

@@ -61,8 +61,7 @@ UserModel.init(
     },
     saleId: {
       type: DataTypes.INTEGER.UNSIGNED,
-      field: 'sale_id',
-      allowNull: false
+      field: 'sale_id'
     }
 
   },

@@ -13,7 +13,7 @@ const router = Router()
 router.get('/api/v1/users', [authMiddleware.authenticate], userController.getUser)
 router.get('/api/v1/users/:uuid', [authMiddleware.authenticate], userController.getUserByUuid)
 router.post('/api/v1/users', [authMiddleware.authenticate], userController.createUser)
-router.put('/api/v1/:uuid/users', [authMiddleware.authenticate], userController.updateUser)
-router.delete('/api/v1/:uuid/users', [authMiddleware.authenticate], userController.deleteUser)
+router.put('/api/v1/users/:uuid', [authMiddleware.authenticate], userController.updateUser)
+router.delete('/api/v1/users/:uuid', [authMiddleware.authenticate], userController.deleteUser)
 
 export default router
