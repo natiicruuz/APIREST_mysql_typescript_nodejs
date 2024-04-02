@@ -1,13 +1,13 @@
 <div align="center">
 
-# Auth-app
+# Car-Agency-App
 
 > Proyecto desarrollado con Typescript con el fin de simular una agencia de carros. <br />
 
-[Implementación del proyecto]() •
-[Variables de entorno]() •
-[Comandos]() •
-[Recursos]() •
+[Implementación del proyecto](https://github.com/natiicruuz/APIREST_mysql_typescript_nodejs?tab=readme-ov-file#entorno-desarrollo) •
+[Variables de entorno](https://github.com/natiicruuz/APIREST_mysql_typescript_nodejs?tab=readme-ov-file#variables-de-entorno) •
+[Comandos](https://github.com/natiicruuz/APIREST_mysql_typescript_nodejs?tab=readme-ov-file#comandos-del-proyecto) •
+[Recursos](https://github.com/natiicruuz/APIREST_mysql_typescript_nodejs?tab=readme-ov-file#recursos) •
 
 
 </div>
