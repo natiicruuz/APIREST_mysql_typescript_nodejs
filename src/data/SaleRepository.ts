@@ -29,6 +29,7 @@ export default class SaleRepository {
         offset: skip,
         limit
       })
+      console.log()
       const calculoPag = Math.ceil(count / limit)
       const totalPages = calculoPag >= 0 ? calculoPag : 1
 
@@ -39,6 +40,7 @@ export default class SaleRepository {
         totalPages
       }
       this.logger.info('[SaleRepository][getSale] -> end.')
+
       return {
         result,
         pagination
@@ -140,7 +142,9 @@ export default class SaleRepository {
       let result
       console.log('sale uuid; ', saleUuid)
 
-      if (saleUuid !== null || saleUuid !== undefined) {
+      const receivedUuid = await this.saleModel.findAll({ where: { uuid: saleUuid } })
+
+      if (receivedUuid.length !== 0) {
         const saleDeleted = await this.saleModel
           .destroy({
             where: {

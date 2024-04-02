@@ -172,9 +172,9 @@ export default class UserRepository {
     try {
       this.logger.info(`[UserRepository][delete][${userUuid}] -> starting...`)
       let result
-      console.log('user uuid; ', userUuid)
+      const receivedUuid = await this.userModel.findAll({ where: { uuid: userUuid } })
 
-      if (userUuid !== null || userUuid !== undefined) {
+      if (receivedUuid.length !== 0) {
         const userDeleted = await this.userModel
           .destroy({
             where: {

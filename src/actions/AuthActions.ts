@@ -29,13 +29,11 @@ export class AuthActions {
 
       // #1 ir a buscar al user por su email
       const foundUser = await this.userAction.getUserByEmail(email)
-      console.log('foundUser', foundUser)
       if (foundUser === false) {
         throw new Error('Email is not correct')
       }
       // #2 validar la contrasena
       const isMatch = bcrypt.compareSync(password, foundUser.password)
-      console.log('isMatch', isMatch)
       if (isMatch) {
         // #3 se genera el token con los datos del usuario
         const token = jwt.sign({
@@ -45,7 +43,6 @@ export class AuthActions {
           isAdmin: foundUser.isAdmin
         }, env.JWT_SECRET_KEY)
         this.logger.info('[AuthAction][login] -> end..')
-        console.log(token)
         return token
       } else {
         throw new Error('Password is not correct')

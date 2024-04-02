@@ -165,9 +165,9 @@ export default class AgencyRepository {
     try {
       this.logger.info(`[AgencyRepository][delete][${agencyUuid}] -> starting...`)
       let result
-      console.log('agency uuid; ', agencyUuid)
+      const receivedUuid = await this.agencyModel.findAll({ where: { uuid: agencyUuid } })
 
-      if (agencyUuid !== null || agencyUuid !== undefined) {
+      if (receivedUuid.length !== 0) {
         const agencyDeleted = await this.agencyModel
           .destroy({
             where: {

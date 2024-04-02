@@ -73,7 +73,6 @@ export default class CarRepository {
           ],
           where: { uuid: carUuid }
         })
-
         const { dataValues } = car[0]
         response = dataValues
       } else {
@@ -158,8 +157,9 @@ export default class CarRepository {
     try {
       this.logger.info(`[CarRepository][delete][${carUuid}] -> starting...`)
       let result
+      const receivedUuid = await this.carModel.findAll({ where: { uuid: carUuid } })
 
-      if (carUuid !== null || carUuid !== undefined) {
+      if (receivedUuid.length !== 0) {
         const carDeleted = await this.carModel
           .destroy({
             where: {

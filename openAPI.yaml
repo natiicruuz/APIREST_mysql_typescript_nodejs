@@ -1,0 +1,1102 @@
+openapi: 3.0.0
+info:
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  title: openapi-car-agency-app
+  version: '1.0'
+  description: API that simulates a car agency.
+  contact:
+    name: Natalia Cruz
+    email: natalia.cruz@ct.uneatlantico.es
+  termsOfService: 'http://swagger.io/terms/'
+servers:
+  - url: 'http://localhost:3000'
+    description: localhost
+
+paths:
+  /api/v1/login:
+    post:
+      operationId: jh3k453
+      summary: Auth Login.
+      description: Checks if user is authorized to excecute other endpoints and login.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseFormat'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+        - Auth
+
+ 
+  /api/v1/agencies:
+    get:
+      description: Retrieves all the Agencies in the database
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAgency'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      tags:
+        - Agency
+      summary: Retrieves all agencies.
+  
+    post:
+      summary: Creation of an agency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAgency'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Agency
+
+
+  /api/v1/agencies/{uuid}:
+    get:
+      summary: Get the agency by uuid
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAgency'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Agency
+      
+    put:
+      summary: Update the agency with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAgency'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Agency
+ 
+    delete:
+      summary: Delete the agency with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAgency'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Agency
+
+  /api/v1/sales:
+    get:
+        description: Retrieves all the sales in the database
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseSale'
+          '400':
+            $ref: '#/components/responses/400'
+          '404':
+            $ref: '#/components/responses/404'
+          '500':
+            $ref: '#/components/responses/500'
+        tags:
+          - Sale
+        summary: Retrieves all sales.
+    post:
+        summary: Creation of a sale+
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ownerId:
+                    type: number
+                  price:
+                    type: number
+                  agencyId:
+                    type: number
+        responses:
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseSale'
+          '404':
+            description: Not Found
+          '500':
+            description: Internal Server Error
+          '501':
+            description: Not Implemented
+        tags:
+          - Sale
+      
+  /api/v1/sales/{uuid}:  
+    get:
+     summary: Get the sale by uuid
+     parameters:
+       - name: uuid
+         in: path
+         required: true
+         schema:
+           type: string
+     responses:
+       '201':
+         description: Created
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/ResponseSale'
+       '404':
+         description: Not Found
+       '500':
+         description: Internal Server Error
+       '501':
+         description: Not Implemented
+     tags:
+       - Sale
+      
+    put:
+      summary: Update the agency with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: number
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSale'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Sale
+    delete:
+      summary: Delete the sale with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSale'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Sale
+
+
+
+  /api/v1/cars:
+    get:
+        description: Retrieves all the cars in the database
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseCar'
+          '400':
+            $ref: '#/components/responses/400'
+          '404':
+            $ref: '#/components/responses/404'
+          '500':
+            $ref: '#/components/responses/500'
+        tags:
+          - Car
+        summary: Retrieves all cars.
+    post:
+        summary: Creation of a car+
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agencyId:
+                    type: number
+                  name:
+                    type: string
+                  model:
+                    type: string
+                  year:
+                    type: number
+                  price:
+                    type: number
+        responses:
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseCar'
+          '404':
+            description: Not Found
+          '500':
+            description: Internal Server Error
+          '501':
+            description: Not Implemented
+        tags:
+          - Car
+  /api/v1/cars/{uuid}:  
+    get:
+     summary: Get the car by uuid
+     parameters:
+       - name: uuid
+         in: path
+         required: true
+         schema:
+           type: string
+     responses:
+       '201':
+         description: Created
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/ResponseCar'
+       '404':
+         description: Not Found
+       '500':
+         description: Internal Server Error
+       '501':
+         description: Not Implemented
+     tags:
+       - Car
+      
+    put:
+      summary: Update the car with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agencyId:
+                    type: number
+                name:
+                  type: string
+                model:
+                  type: string
+                year:
+                  type: number
+                price:
+                  type: number
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCar'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Car
+    delete:
+      summary: Delete the car with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCar'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - Car
+
+  /api/v1/users:
+    get:
+        description: Retrieves all the cars in the database
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseUser'
+          '400':
+            $ref: '#/components/responses/400'
+          '404':
+            $ref: '#/components/responses/404'
+          '500':
+            $ref: '#/components/responses/500'
+        tags:
+          - User
+        summary: Retrieves all users.
+    post:
+        summary: Creation of a user+
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  password:
+                    type: string
+                  isAdmin:
+                    type: boolean
+                  saleId:
+                    type: number
+        responses:
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseUser'
+          '404':
+            description: Not Found
+          '500':
+            description: Internal Server Error
+          '501':
+            description: Not Implemented
+        tags:
+          - User
+  /api/v1/users/{uuid}:  
+    get:
+     summary: Get the user by uuid
+     parameters:
+       - name: uuid
+         in: path
+         required: true
+         schema:
+           type: string
+     responses:
+       '201':
+         description: Created
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/ResponseUser'
+       '404':
+         description: Not Found
+       '500':
+         description: Internal Server Error
+       '501':
+         description: Not Implemented
+     tags:
+       - User
+      
+    put:
+      summary: Update the user with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                    type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                isAdmin:
+                  type: boolean
+                saleId:
+                  type: number
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUser'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - User
+    delete:
+      summary: Delete the user with the uuid found
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUser'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+      tags:
+        - User
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Health:
+      type: object
+      properties:
+        date:
+          type: string
+        statusQueue:
+          type: string
+      xml:
+        name: Health
+      x-stoplight:
+        id: hkorz4ahikvno
+    Links:
+      type: object
+      x-stoplight:
+        id: eb62a01e84fd0
+      properties:
+        self:
+          type: string
+    ResponseFormat:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        body:
+          type: object
+          properties:
+            _links:
+              $ref: '#/components/schemas/Links'
+            _embedded:
+              type: object
+              properties:
+                detail:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Health'
+            pagination:
+              $ref: '#/components/schemas/PaginationResponse'
+      x-examples:
+        Example 1:
+          statusCode: 200
+          body:
+            _links:
+              self: 'http://localhost:3000/api/v1/health'
+            _embedded:
+              detail:
+                - okDb: false
+                  statusQueue: true
+                  SYSDATE(): 2023/05/29
+            pagination:
+              total: 0
+              perPage: 0
+              currentPage: 0
+              totalPages: 0
+    PaginationResponse:
+      type: object
+      properties:
+        currentPage:
+          type: number
+        perPage:
+          type: number
+        totalItems:
+          type: number
+        totalPages:
+          type: number
+      x-stoplight:
+        id: gr0y7bt74q5vl
+    ResponseAgency:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        body:
+          type: object
+          properties:
+            _links:
+              type: object
+              properties:
+                self:
+                  type: string
+            _embedded:
+              type: object
+              properties:
+                detail:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: 
+                        type: number
+                      uuid:
+                        type: string
+                      name:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+
+            pagination:
+              type: object
+              properties:
+                total:
+                  type: integer
+                perPage:
+                  type: integer
+                currentPage:
+                  type: integer
+                totalPages:
+                  type: integer
+      x-examples:
+        Example 1:
+          statusCode: 200
+          body:
+            _links:
+              self: 'http://localhost:3000/api/v1/follow-ups/29717e5a-53f0-46af-ae75-7d5f8a15f301/categories'
+            _embedded:
+              detail:
+                - uuid: 29717e5a-53f0-46af-ae75-7d5f8a15f301
+                  name: Mensaje a docente
+                  isActive: 1
+                  createdAt: '2023-01-02T10:08:31.000Z'
+                  updatedAt: '2023-01-02T10:08:31.000Z'
+            pagination:
+              total: 0
+              perPage: 0
+              currentPage: 0
+              totalPages: 0
+    ResponseSale:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        body:
+          type: object
+          properties:
+            _links:
+              type: object
+              properties:
+                self:
+                  type: string
+            _embedded:
+              type: object
+              properties:
+                detail:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: 
+                        type: number
+                      uuid:
+                        type: string
+                      name:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+
+            pagination:
+              type: object
+              properties:
+                total:
+                  type: integer
+                perPage:
+                  type: integer
+                currentPage:
+                  type: integer
+                totalPages:
+                  type: integer
+      x-examples:
+        Example 1:
+          statusCode: 200
+          body:
+            _links:
+              self: 'http://localhost:3000/api/v1/follow-ups/29717e5a-53f0-46af-ae75-7d5f8a15f301/categories'
+            _embedded:
+              detail:
+                - uuid: 29717e5a-53f0-46af-ae75-7d5f8a15f301
+                  name: Mensaje a docente
+                  isActive: 1
+                  createdAt: '2023-01-02T10:08:31.000Z'
+                  updatedAt: '2023-01-02T10:08:31.000Z'
+            pagination:
+              total: 0
+              perPage: 0
+              currentPage: 0
+              totalPages: 0
+    ResponseCar:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        body:
+          type: object
+          properties:
+            _links:
+              type: object
+              properties:
+                self:
+                  type: string
+            _embedded:
+              type: object
+              properties:
+                detail:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: 
+                        type: number
+                      uuid:
+                        type: string
+                      name:
+                        type: string
+                      model:
+                        type: string
+                      year:
+                        type: string
+                      price:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+            pagination:
+              type: object
+              properties:
+                total:
+                  type: integer
+                perPage:
+                  type: integer
+                currentPage:
+                  type: integer
+                totalPages:
+                  type: integer
+      x-examples:
+        Example 1:
+          statusCode: 200
+          body:
+            _links:
+              self: 'http://localhost:3000/api/v1/follow-ups/29717e5a-53f0-46af-ae75-7d5f8a15f301/categories'
+            _embedded:
+              detail:
+                - uuid: 29717e5a-53f0-46af-ae75-7d5f8a15f301
+                  name: Mensaje a docente
+                  isActive: 1
+                  createdAt: '2023-01-02T10:08:31.000Z'
+                  updatedAt: '2023-01-02T10:08:31.000Z'
+            pagination:
+              total: 0
+              perPage: 0
+              currentPage: 0
+              totalPages: 0    
+    ResponseUser:
+          type: object
+          properties:
+            statusCode:
+              type: integer
+            body:
+              type: object
+              properties:
+                _links:
+                  type: object
+                  properties:
+                    self:
+                      type: string
+                _embedded:
+                  type: object
+                  properties:
+                    detail:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id: 
+                            type: number
+                          uuid:
+                            type: string
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          password:
+                            type: string
+                          isAdmin:
+                            type: boolean
+                          saleId:
+                            type: number
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+
+                pagination:
+                  type: object
+                  properties:
+                    total:
+                      type: integer
+                    perPage:
+                      type: integer
+                    currentPage:
+                      type: integer
+                    totalPages:
+                      type: integer
+          x-examples:
+            Example 1:
+              statusCode: 200
+              body:
+                _links:
+                  self: 'http://localhost:3000/api/v1/follow-ups/29717e5a-53f0-46af-ae75-7d5f8a15f301/categories'
+                _embedded:
+                  detail:
+                    - uuid: 29717e5a-53f0-46af-ae75-7d5f8a15f301
+                      name: Mensaje a docente
+                      isActive: 1
+                      createdAt: '2023-01-02T10:08:31.000Z'
+                      updatedAt: '2023-01-02T10:08:31.000Z'
+                pagination:
+                  total: 0
+                  perPage: 0
+                  currentPage: 0
+                  totalPages: 0
+
+  
+  
+  responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      '400':
+        description: Bad Request.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '401':
+        description: Unauthorized.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '403':
+        description: Forbidden.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '404':
+        description: Not Found.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '405':
+        description: Method not allowed.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '406':
+        description: Not acceptable.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '408':
+        description: Request Timeout.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '424':
+        description: Failed Dependency.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '500':
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+      '501':
+        description: 'The server either does not recognized the request method, or it lacks the ability to to fulfill the request.'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                error:
+                  type: boolean
+                  default: true
+                code:
+                  type: number
+
+
+tags:
+  - name: Auth
+    description: API that is in charge of authenticating users.
+  - name: Agency
+    description: API in charge of displaying the agencies information.
+  - name: Sale
+    description: API in charge of displaying the sales information.
+  - name: Car
+    description: API  in charge of displaying the car information.
+  - name: User
+    description: API in charge of displaying the users information.
+security:
+  - BasicAuth: []
+  - bearerAuth: []
+
